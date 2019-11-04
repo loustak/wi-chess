@@ -6,7 +6,7 @@
       "merge": {},
       "resources": {
         "manifest": {
-          "eTag": "05d5e4e6b0e920fda0654750af335284"
+          "eTag": "d36a05062bcb494519fc08773af693f4"
         },
         "interactionModel": {
           "de-DE": {
@@ -37,7 +37,7 @@
             "eTag": "92b9df2f01fbbe078ce077fb68c7ff30"
           },
           "en-US": {
-            "eTag": "c661eac2ac36e13c92839a599fd9b0c1"
+            "eTag": "4a63accb2e4a6f22e3be212cbe79f1c7"
           },
           "fr-CA": {
             "eTag": "5ae22adb4b9f3b222d019d94f06767be"
@@ -52,7 +52,7 @@
             "eTag": "29230730a1f2683d9f2b238c96c6956f"
           },
           "fr-FR": {
-            "eTag": "55015943318cdcd04cbfd1be5f85df82"
+            "eTag": "b335970162d131207efffe85a49ed28a"
           }
         },
         "lambda": [
@@ -65,7 +65,7 @@
             "codeUri": "lambda/custom",
             "functionName": "ask-custom-chess-default",
             "handler": "index.handler",
-            "revisionId": "bcb7f484-97a3-4bdf-97e4-387f54ed0044",
+            "revisionId": "77476ebc-227f-4440-8435-946218ad28ee",
             "runtime": "nodejs8.10"
           }
         ]

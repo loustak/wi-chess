@@ -9,6 +9,9 @@ const i18n = require('i18next');
 // i18n strings for all supported locales
 const languageStrings = require('./languageStrings');
 
+const Chess = require('./chess').Chess;
+var chessGame = null;
+
 const LaunchRequestHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'LaunchRequest';
@@ -23,13 +26,15 @@ const LaunchRequestHandler = {
     }
 };
 
-const HelloWorldIntentHandler = {
+const PlayIntentHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'HelloWorldIntent';
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'PlayIntent';
     },
     handle(handlerInput) {
-        const speakOutput = handlerInput.t('HELLO_MSG');
+        const speakOutput = handlerInput.t('GAME_STARTED_MESSAGE');
+
+        chessGame = new Chess()
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
@@ -159,7 +164,7 @@ const LocalisationRequestInterceptor = {
 exports.handler = Alexa.SkillBuilders.custom()
     .addRequestHandlers(
         LaunchRequestHandler,
-        HelloWorldIntentHandler,
+        PlayIntentHandler,
         HelpIntentHandler,
         CancelAndStopIntentHandler,
         FallbackIntentHandler,

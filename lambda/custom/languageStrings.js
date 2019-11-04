@@ -8,8 +8,8 @@
 module.exports = {
     en: {
         translation: {
-            WELCOME_MSG: 'Welcome, you can say Hello or Help. Which would you like to try?',
-            HELLO_MSG: 'Hello World!',
+            WELCOME_MSG: 'Welcome, say play to start a new game!',
+            GAME_STARTED_MESSAGE: 'Game started.',
             HELP_MSG: 'You can say hello to me! How can I help?',
             GOODBYE_MSG: 'Goodbye!',
             REFLECTOR_MSG: 'You just triggered {{intentName}}',

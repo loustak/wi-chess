@@ -4,23 +4,19 @@
       "locales": {
         "en-US": {
           "name": "chess",
-          "summary": "Sample Short Description",
-          "description": "Sample Full Description",
+          "summary": "Play chess",
+          "description": "Play chess",
           "examplePhrases": [
-            "Alexa open hello world",
-            "hello",
-            "help"
+            "Alexa play chess"
           ],
           "keywords": []
         },
         "fr-FR": {
-          "name": "chess",
-          "summary": "Sample Short Description",
-          "description": "Sample Full Description",
+          "name": "échecs",
+          "summary": "Jouer aux échecs",
+          "description": "Jouer aux échecs",
           "examplePhrases": [
-            "Alexa ouvre le génie des salutations",
-            "bonjour",
-            "aide"
+            "Alexa jouer aux échecs"
           ],
           "keywords": []
         }

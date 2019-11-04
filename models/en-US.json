@@ -1,7 +1,7 @@
 {
     "interactionModel": {
         "languageModel": {
-            "invocationName": "hello world",
+            "invocationName": "chess game",
             "intents": [
                 {
                     "name": "AMAZON.CancelIntent",
@@ -16,16 +16,14 @@
                     "samples": []
                 },
                 {
-                    "name": "HelloWorldIntent",
+                    "name": "PlayIntent",
                     "slots": [],
                     "samples": [
-                        "hello",
-                        "how are you",
-                        "say hi world",
-                        "say hi",
-                        "hi",
-                        "say hello world",
-                        "say hello"
+                        "play",
+                        "start",
+                        "game",
+                        "new game",
+                        "start new game"
                     ]
                 },
                 {
