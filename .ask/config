@@ -1,9 +1,146 @@
 {
   "deploy_settings": {
     "default": {
-      "skill_id": "",
+      "skill_id": "amzn1.ask.skill.f65add8e-eefd-4855-9da0-c7aa901cae4f",
       "was_cloned": false,
-      "merge": {}
+      "merge": {},
+      "resources": {
+        "manifest": {
+          "eTag": "05d5e4e6b0e920fda0654750af335284"
+        },
+        "interactionModel": {
+          "de-DE": {
+            "eTag": "6e5857923ef7c5d4bb5b60a09b53d771"
+          },
+          "en-CA": {
+            "eTag": "d51cad2ea655d37e361c63ea2a14c525"
+          },
+          "en-AU": {
+            "eTag": "7c339bbc522241534399fc45ce06d41b"
+          },
+          "en-IN": {
+            "eTag": "33a9568a4efcea4fc3e25ce61c6304a8"
+          },
+          "es-ES": {
+            "eTag": "6a598a8e545f526a6ab06565b6e20890"
+          },
+          "en-GB": {
+            "eTag": "e4ce2ac297667cab1e87ab18c67a5b80"
+          },
+          "es-MX": {
+            "eTag": "cbcb552cffe2de5cae94746f098ffcae"
+          },
+          "hi-IN": {
+            "eTag": "86a0b385d81fc7185037bcb92b3fc48e"
+          },
+          "pt-BR": {
+            "eTag": "92b9df2f01fbbe078ce077fb68c7ff30"
+          },
+          "en-US": {
+            "eTag": "c661eac2ac36e13c92839a599fd9b0c1"
+          },
+          "fr-CA": {
+            "eTag": "5ae22adb4b9f3b222d019d94f06767be"
+          },
+          "it-IT": {
+            "eTag": "7b60e5c9fcf1fd43d7c7b2e2f90ce7c1"
+          },
+          "es-US": {
+            "eTag": "53dd67cfbd8f0b2516cf46e6cdfe6e3a"
+          },
+          "ja-JP": {
+            "eTag": "29230730a1f2683d9f2b238c96c6956f"
+          },
+          "fr-FR": {
+            "eTag": "55015943318cdcd04cbfd1be5f85df82"
+          }
+        },
+        "lambda": [
+          {
+            "alexaUsage": [
+              "custom/default"
+            ],
+            "arn": "arn:aws:lambda:us-east-1:701752815482:function:ask-custom-chess-default",
+            "awsRegion": "us-east-1",
+            "codeUri": "lambda/custom",
+            "functionName": "ask-custom-chess-default",
+            "handler": "index.handler",
+            "revisionId": "bcb7f484-97a3-4bdf-97e4-387f54ed0044",
+            "runtime": "nodejs8.10"
+          }
+        ]
+      }
+    },
+    "ASK-CLI": {
+      "skill_id": "amzn1.ask.skill.b8daf784-62b6-4268-b562-49dc33739a3b",
+      "was_cloned": false,
+      "merge": {},
+      "resources": {
+        "manifest": {
+          "eTag": "1aad53d02d1fc81011d38a51472b3251"
+        },
+        "interactionModel": {
+          "de-DE": {
+            "eTag": "1bfdd8be9a7cc22b0a5d9bbb1a4f0515"
+          },
+          "en-AU": {
+            "eTag": "041842377f8cccab5e05b8c69cc8522a"
+          },
+          "en-CA": {
+            "eTag": "8b55af0863d0bd0e1905981f3cd353c0"
+          },
+          "en-IN": {
+            "eTag": "93304b00898fdcc0f70f941a0201f546"
+          },
+          "es-ES": {
+            "eTag": "f9a1f1a94d356982fa4e9d8a3e351a3e"
+          },
+          "en-GB": {
+            "eTag": "1418cd42f3d8c365844fcd89bb91a1d4"
+          },
+          "es-MX": {
+            "eTag": "220ea1961b4a993b2d9c38f764521a6f"
+          },
+          "hi-IN": {
+            "eTag": "845b93dd312c85c8f69ac334b7f4a0e5"
+          },
+          "pt-BR": {
+            "eTag": "2e3b16f47ae824f472c57e1923cebb75"
+          },
+          "en-US": {
+            "eTag": "8fa576711b9f7809e60c7c203c5c3e83"
+          },
+          "fr-CA": {
+            "eTag": "db4bc922084bec5f2019646646754e75"
+          },
+          "it-IT": {
+            "eTag": "bbb0e2956caa32693efa586576e7a16b"
+          },
+          "es-US": {
+            "eTag": "d30e390eef14640f3a8a5681f2699338"
+          },
+          "ja-JP": {
+            "eTag": "3e7fc5addb19dc460c18d546df7a4d7f"
+          },
+          "fr-FR": {
+            "eTag": "0ce6ae3ba4e65255633c1671105721fa"
+          }
+        },
+        "lambda": [
+          {
+            "alexaUsage": [
+              "custom/default"
+            ],
+            "arn": "arn:aws:lambda:us-east-1:701752815482:function:ask-custom-chess-default",
+            "awsRegion": "us-east-1",
+            "codeUri": "lambda/custom",
+            "functionName": "ask-custom-chess-default",
+            "handler": "index.handler",
+            "revisionId": "d8b1fbeb-e6f4-4f95-8e93-2c562f5d1d0b",
+            "runtime": "nodejs8.10"
+          }
+        ]
+      }
     }
   }
 }
