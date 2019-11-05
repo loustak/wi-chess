@@ -1,7 +1,7 @@
 {
     "interactionModel": {
         "languageModel": {
-            "invocationName": "jeu d'échec",
+            "invocationName": "chess game",
             "intents": [
                 {
                     "name": "AMAZON.CancelIntent",
@@ -16,21 +16,374 @@
                     "samples": []
                 },
                 {
-                    "name": "HelloWorldIntent",
+                    "name": "PlayIntent",
                     "slots": [],
                     "samples": [
-                        "bonjour",
-                        "coucou",
-                        "salut",
-                        "me dire bonjour"
+                        "play",
+                        "start",
+                        "game",
+                        "new game",
+                        "start new game"
                     ]
                 },
                 {
                     "name": "AMAZON.NavigateHomeIntent",
                     "samples": []
+                },
+                {
+                    "name": "AMAZON.FallbackIntent",
+                    "samples": []
+                },
+                {
+                    "name": "MoveIntent",
+                    "slots": [
+                        {
+                            "name": "coordinate",
+                            "type": "Coordinate",
+                            "samples": [
+                                "{coordinate} {coordinate}",
+                                "{coordinate}"
+                            ]
+                        }
+                    ],
+                    "samples": [
+                        "{coordinate} {coordinate}",
+                        "{coordinate} to {coordinate}",
+                        "move {coordinate} to {coordinate}",
+                        "play {coordinate} to {coordinate}",
+                        "play {coordinate}",
+                        "move {coordinate}"
+                    ]
                 }
             ],
-            "types": []
-        }
+            "types": [
+                {
+                    "name": "Coordinate",
+                    "values": [
+                        {
+                            "name": {
+                                "value": "h8"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "h7"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "h6"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "h5"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "h4"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "h3"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "h2"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "h1"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "f8"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "f7"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "f6"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "f5"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "f4"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "f3"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "f2"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "f1"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "e8"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "e7"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "e6"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "e5"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "e4"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "e3"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "e2"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "e1"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "d8"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "d7"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "d6"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "d5"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "d4"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "d3"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "d2"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "d1"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "c8"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "c7"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "c6"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "c5"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "c4"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "c3"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "c2"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "c1"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "b8"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "b7"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "b6"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "b5"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "b4"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "b3"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "b2"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "b1"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "a8"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "a7"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "a6"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "a5"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "a4"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "a3"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "a2"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "a1"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        "dialog": {
+            "intents": [
+                {
+                    "name": "MoveIntent",
+                    "confirmationRequired": false,
+                    "prompts": {},
+                    "slots": [
+                        {
+                            "name": "coordinate",
+                            "type": "Coordinate",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.439949135109.1395466335735"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "delegationStrategy": "ALWAYS"
+        },
+        "prompts": [
+            {
+                "id": "Slot.Validation.439949135109.1395466335735.1149429565795",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "Please specify a valid coordinate"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.439949135109.1395466335735",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "Please specify the move to makes"
+                    }
+                ]
+            }
+        ]
     }
 }

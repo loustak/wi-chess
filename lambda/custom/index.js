@@ -10,7 +10,6 @@ const i18n = require('i18next');
 const languageStrings = require('./languageStrings');
 
 const Chess = require('./chess').Chess;
-var chessGame = null;
 
 const LaunchRequestHandler = {
     canHandle(handlerInput) {
@@ -32,13 +31,68 @@ const PlayIntentHandler = {
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'PlayIntent';
     },
     handle(handlerInput) {
-        const speakOutput = handlerInput.t('GAME_STARTED_MESSAGE');
+        const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
+        sessionAttributes.game = new Chess();
+        handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
 
-        chessGame = new Chess()
+        const speakOutput = handlerInput.t('GAME_STARTED_MSG');
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
-            //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
+            .reprompt(speakOutput)
+            .getResponse();
+    }
+};
+
+const MoveIntentHandler = {
+    canHandle(handlerInput) {
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'MoveIntent';
+    },
+    handle(handlerInput) {
+        console.log(`~~~~ ZERO ~~~~`);
+
+        const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
+
+        const coord_start = getSlotValue(handlerInput.requestEnvelope, 'coord_start')
+        const coord_destination = getSlotValue(handlerInput.requestEnvelope, 'coord_destination')
+
+        var speakOutput
+
+        console.log(`~~~~ ONE ~~~~`);
+
+        console.log(`~~~~ COORD START: ${coord_start}`)
+
+        if (coord_start && coord_start != '') {
+            // Start and end coord
+            const res = sessionAttributes.game.move({ from: coord_start, to: coord_destination})
+
+            if (res == null) {
+                speakOutput = handlerInput.t('INVALID_MOVE_MSG');
+            } else {
+                speakOutput = handlerInput.t('MOVED_FROM_MSG', {coord_start: coord_start, coord_destination: coord_destination});
+            }
+        } else {
+            const res = sessionAttributes.game.move(coord)
+            if (res == null) {
+                speakOutput = handlerInput.t('INVALID_MOVE_MSG');
+            } else {
+                speakOutput = handlerInput.t('MOVED_MSG', {coord_destination: coord_destination});
+            }
+        }
+
+        console.log(`~~~~ TWO ~~~~`);
+
+        handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
+
+        speakOutput = handlerInput.t('HELP_MSG')
+
+        console.log(`~~~~ THREE ~~~~`);
+
+        return handlerInput.responseBuilder
+            .speak(speakOutput)
+            .reprompt(speakOutput)
+            //.withSimpleCard('Debug', move)
             .getResponse();
     }
 };
@@ -135,7 +189,7 @@ const ErrorHandler = {
         return true;
     },
     handle(handlerInput, error) {
-        const speakOutput = handlerInput.t('ERROR_MSG');
+        const speakOutput = handlerInput.t('ERROR_MSG', {error: JSON.stringify(error)} );
         console.log(`~~~~ Error handled: ${JSON.stringify(error)}`);
 
         return handlerInput.responseBuilder
@@ -165,6 +219,7 @@ exports.handler = Alexa.SkillBuilders.custom()
     .addRequestHandlers(
         LaunchRequestHandler,
         PlayIntentHandler,
+        MoveIntentHandler,
         HelpIntentHandler,
         CancelAndStopIntentHandler,
         FallbackIntentHandler,

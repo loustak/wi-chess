@@ -6,7 +6,7 @@
       "merge": {},
       "resources": {
         "manifest": {
-          "eTag": "d36a05062bcb494519fc08773af693f4"
+          "eTag": "e8b19b1ef298299a7cd209f6fb1320dd"
         },
         "interactionModel": {
           "de-DE": {
@@ -37,7 +37,7 @@
             "eTag": "92b9df2f01fbbe078ce077fb68c7ff30"
           },
           "en-US": {
-            "eTag": "4a63accb2e4a6f22e3be212cbe79f1c7"
+            "eTag": "eba2d1810467c1caaaa235fd120c7032"
           },
           "fr-CA": {
             "eTag": "5ae22adb4b9f3b222d019d94f06767be"
@@ -52,7 +52,7 @@
             "eTag": "29230730a1f2683d9f2b238c96c6956f"
           },
           "fr-FR": {
-            "eTag": "b335970162d131207efffe85a49ed28a"
+            "eTag": "9886cd125958cf8ba75ae028819aa0cc"
           }
         },
         "lambda": [
@@ -60,12 +60,12 @@
             "alexaUsage": [
               "custom/default"
             ],
-            "arn": "arn:aws:lambda:us-east-1:701752815482:function:ask-custom-chess-default",
+            "arn": "arn:aws:lambda:us-east-1:701752815482:function:chess",
             "awsRegion": "us-east-1",
             "codeUri": "lambda/custom",
-            "functionName": "ask-custom-chess-default",
+            "functionName": "chess",
             "handler": "index.handler",
-            "revisionId": "77476ebc-227f-4440-8435-946218ad28ee",
+            "revisionId": "7787d645-8cbf-4da7-a769-e55fd56c2b95",
             "runtime": "nodejs8.10"
           }
         ]
