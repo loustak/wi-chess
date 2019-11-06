@@ -9,7 +9,10 @@ const i18n = require('i18next');
 // i18n strings for all supported locales
 const languageStrings = require('./languageStrings');
 
-const Chess = require('./chess').Chess;
+const request = require('request')
+const Chess = require('chess').Chess;
+
+const webServer = 'http://639338f5.ngrok.io'
 
 const LaunchRequestHandler = {
     canHandle(handlerInput) {
@@ -47,6 +50,8 @@ const PlayIntentHandler = {
         sessionAttributes.fen = new Chess().fen();
         handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
 
+        request.post(webServer + '/start')
+
         const speakOutput = handlerInput.t('GAME_STARTED_MSG');
 
         return handlerInput.responseBuilder
@@ -81,6 +86,8 @@ const MoveIntentHandler = {
         } else {
             const res = game.move({ from: coord_start, to: coord_destination})
 
+            console.log(game.ascii())
+
             if (res == null) {
                 speakOutput = handlerInput.t('INVALID_MOVE_MSG');
             } else {
@@ -88,8 +95,11 @@ const MoveIntentHandler = {
             }
         }
 
-        sessionAttributes.fen = game.fen()
+        const fen = game.fen()
+        sessionAttributes.fen = fen
         handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
+
+        request.post(webServer + '/fen', { form: { fen: fen } })
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
