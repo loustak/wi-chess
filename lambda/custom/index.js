@@ -10,7 +10,7 @@ const i18n = require('i18next');
 const languageStrings = require('./languageStrings');
 
 const request = require('request')
-const Chess = require('chess').Chess;
+const Chess = require('chess.js').Chess;
 
 const webServer = 'http://639338f5.ngrok.io'
 

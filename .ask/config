@@ -37,7 +37,7 @@
             "eTag": "92b9df2f01fbbe078ce077fb68c7ff30"
           },
           "en-US": {
-            "eTag": "acb08314b0004963b238d4f9157cc69f"
+            "eTag": "595436fb20c476ea52119a0e32fda77f"
           },
           "fr-CA": {
             "eTag": "5ae22adb4b9f3b222d019d94f06767be"
@@ -52,7 +52,7 @@
             "eTag": "29230730a1f2683d9f2b238c96c6956f"
           },
           "fr-FR": {
-            "eTag": "d3b5f1abbbd5e02f6b404a351f6efae4"
+            "eTag": "8f28b1f5cdb72a5e1e52cb57f4faaa05"
           }
         },
         "lambda": [
@@ -65,7 +65,7 @@
             "codeUri": "lambda/custom",
             "functionName": "chess",
             "handler": "index.handler",
-            "revisionId": "ff0e64af-a440-4040-a9c7-e35e8fc7bc7a",
+            "revisionId": "a2527e2b-b1ec-4e6d-b49c-c0270c7e4976",
             "runtime": "nodejs8.10"
           }
         ]
