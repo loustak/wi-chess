@@ -27,12 +27,24 @@ const LaunchRequestHandler = {
 
 const PlayIntentHandler = {
     canHandle(handlerInput) {
+    //    if (Alexa.getRequestType(handlerInput.requestEnvelope) != 'IntentRequest'
+    //         || Alexa.getIntentName(handlerInput.requestEnvelope) != 'PlayIntent') {
+    //             return false
+    //         }
+        
+    //     const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
+
+    //     const isPlaying = sessionAttributes.isPlaying
+    //     if (isPlaying == undefined || isPlaying == false) return false
+        
+    //     return true
+
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'PlayIntent';
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'PlayIntent'
     },
     handle(handlerInput) {
         const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
-        sessionAttributes.game = new Chess();
+        sessionAttributes.fen = new Chess().fen();
         handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
 
         const speakOutput = handlerInput.t('GAME_STARTED_MSG');
@@ -50,44 +62,34 @@ const MoveIntentHandler = {
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'MoveIntent';
     },
     handle(handlerInput) {
-        console.log(`~~~~ ZERO ~~~~`);
+        var sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
 
-        const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
+        var coord_start = Alexa.getSlotValue(handlerInput.requestEnvelope, 'coord_start')
+        var coord_destination = Alexa.getSlotValue(handlerInput.requestEnvelope, 'coord_destination')
 
-        const coord_start = getSlotValue(handlerInput.requestEnvelope, 'coord_start')
-        const coord_destination = getSlotValue(handlerInput.requestEnvelope, 'coord_destination')
-
+        var game = new Chess(sessionAttributes.fen)
         var speakOutput
 
-        console.log(`~~~~ ONE ~~~~`);
+        if (coord_start == undefined || coord_start == null) {
+            const res = game.move({ to: coord_destination })
 
-        console.log(`~~~~ COORD START: ${coord_start}`)
-
-        if (coord_start && coord_start != '') {
-            // Start and end coord
-            const res = sessionAttributes.game.move({ from: coord_start, to: coord_destination})
+            if (res == null) {
+                speakOutput = handlerInput.t('INVALID_MOVE_MSG');
+            } else {
+                speakOutput = handlerInput.t('MOVED_MSG', {coord_destination: coord_destination});
+            }
+        } else {
+            const res = game.move({ from: coord_start, to: coord_destination})
 
             if (res == null) {
                 speakOutput = handlerInput.t('INVALID_MOVE_MSG');
             } else {
                 speakOutput = handlerInput.t('MOVED_FROM_MSG', {coord_start: coord_start, coord_destination: coord_destination});
             }
-        } else {
-            const res = sessionAttributes.game.move(coord)
-            if (res == null) {
-                speakOutput = handlerInput.t('INVALID_MOVE_MSG');
-            } else {
-                speakOutput = handlerInput.t('MOVED_MSG', {coord_destination: coord_destination});
-            }
         }
 
-        console.log(`~~~~ TWO ~~~~`);
-
+        sessionAttributes.fen = game.fen()
         handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
-
-        speakOutput = handlerInput.t('HELP_MSG')
-
-        console.log(`~~~~ THREE ~~~~`);
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
@@ -218,8 +220,8 @@ const LocalisationRequestInterceptor = {
 exports.handler = Alexa.SkillBuilders.custom()
     .addRequestHandlers(
         LaunchRequestHandler,
-        PlayIntentHandler,
         MoveIntentHandler,
+        PlayIntentHandler,
         HelpIntentHandler,
         CancelAndStopIntentHandler,
         FallbackIntentHandler,
