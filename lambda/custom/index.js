@@ -12,7 +12,43 @@ const languageStrings = require('./languageStrings');
 const request = require('request')
 const Chess = require('chess.js').Chess;
 
-const webServer = 'http://639338f5.ngrok.io'
+const webServer = 'http://56c0ee33.ngrok.io'
+
+function getGameOver(game, color) {
+    if (game.in_draw() || game.in_stalemate()) {
+        return 'DRAW'
+    } else if (game.in_threefold_repetition()) {
+        return 'REPETITION'
+    } else if (game.insufficient_material()) {
+        return 'INSUFFICIENT_MATERIAL'
+    } else if (game.in_checkmate()) {
+        return color + '_CHECKMATE'
+    }
+
+    return false
+}
+
+function getPieceName(handlerInput, piece) {
+    if (piece === 'p') {
+        return handlerInput.t('PIECE_PAWN')
+    } else if (piece === 'n') {
+        return handlerInput.t('PIECE_NIGHT')
+    } else if (piece === 'b') {
+        return handlerInput.t('PIECE_BISHOP')
+    } else if (piece === 'r') {
+        return handlerInput.t('PIECE_ROOK')
+    } else if (piece === 'q') {
+        return handlerInput.t('PIECE_QUEEN')
+    } else if (piece === 'k') {
+        return handlerInput.t('PIECE_KING')
+    }
+
+    return handlerInput.t('PIECE_UNKNOWN')
+}
+
+function getSlotResolutionName(slot) {
+    return slot.resolutions.resolutionsPerAuthority[0].values[0].value.name
+}
 
 const LaunchRequestHandler = {
     canHandle(handlerInput) {
@@ -30,24 +66,25 @@ const LaunchRequestHandler = {
 
 const PlayIntentHandler = {
     canHandle(handlerInput) {
-    //    if (Alexa.getRequestType(handlerInput.requestEnvelope) != 'IntentRequest'
-    //         || Alexa.getIntentName(handlerInput.requestEnvelope) != 'PlayIntent') {
-    //             return false
-    //         }
-        
-    //     const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
+        if (Alexa.getRequestType(handlerInput.requestEnvelope) != 'IntentRequest'
+            || Alexa.getIntentName(handlerInput.requestEnvelope) != 'PlayIntent') {
+            return false
+        }
 
-    //     const isPlaying = sessionAttributes.isPlaying
-    //     if (isPlaying == undefined || isPlaying == false) return false
-        
-    //     return true
+        const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
 
-        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'PlayIntent'
+        const isPlaying = sessionAttributes.isPlaying
+        if (isPlaying != null || isPlaying == false) return false
+
+        return true
+
+        // return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+        //     && Alexa.getIntentName(handlerInput.requestEnvelope) === 'PlayIntent'
     },
     handle(handlerInput) {
         const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
         sessionAttributes.fen = new Chess().fen();
+        sessionAttributes.isPlaying = true
         handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
 
         request.post(webServer + '/start')
@@ -63,43 +100,75 @@ const PlayIntentHandler = {
 
 const MoveIntentHandler = {
     canHandle(handlerInput) {
+        const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
+        if (!sessionAttributes.isPlaying) return false
+
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'MoveIntent';
     },
     handle(handlerInput) {
         var sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
 
-        var coord_start = Alexa.getSlotValue(handlerInput.requestEnvelope, 'coord_start')
-        var coord_destination = Alexa.getSlotValue(handlerInput.requestEnvelope, 'coord_destination')
+        var has_start = Alexa.getSlotValue(handlerInput.requestEnvelope, 'coord_start')
+        var has_destination = Alexa.getSlotValue(handlerInput.requestEnvelope, 'coord_destination')
+
+        try {
+        if (has_start != null) {
+            const slot = Alexa.getSlot(handlerInput.requestEnvelope, 'coord_start')
+            coord_start = getSlotResolutionName(slot)
+        }
+
+        if (has_destination != null) {
+            const slot = Alexa.getSlot(handlerInput.requestEnvelope, 'coord_destination')
+            coord_destination = getSlotResolutionName(slot)
+        }
 
         var game = new Chess(sessionAttributes.fen)
-        var speakOutput
+        var res = null
+        var speakOutput = null
 
-        if (coord_start == undefined || coord_start == null) {
-            const res = game.move({ to: coord_destination })
-
-            if (res == null) {
-                speakOutput = handlerInput.t('INVALID_MOVE_MSG');
-            } else {
-                speakOutput = handlerInput.t('MOVED_MSG', {coord_destination: coord_destination});
-            }
+        if (has_start == null && has_destination != null) {
+            res = game.move(coord_destination)
+        } else if (has_start != null && has_destination != null) {
+            res = game.move({ from: coord_start, to: coord_destination})
         } else {
-            const res = game.move({ from: coord_start, to: coord_destination})
+            speakOutput = handlerInput.t('INVALID_MOVE_MSG')
+        }
 
-            console.log(game.ascii())
-
-            if (res == null) {
-                speakOutput = handlerInput.t('INVALID_MOVE_MSG');
-            } else {
-                speakOutput = handlerInput.t('MOVED_FROM_MSG', {coord_start: coord_start, coord_destination: coord_destination});
-            }
+        if (res != null) {
+            speakOutput = handlerInput.t('MOVED_MSG', {
+                piece: getPieceName(handlerInput, res.piece),
+                coord_start: res.from,
+                coord_destination: res.to
+            })
         }
 
         const fen = game.fen()
+        const color = game.turn() === 'w' ? 'WHITE' : 'BLACK'
+
+        var gameOver = getGameOver(game, color)
+
+        if (color === 'WHITE') {
+            speakOutput += ' ' + handlerInput.t('TRAIT_WHITE')
+        } else {
+            speakOutput += ' ' + handlerInput.t('TRAIT_BLACK')
+        }
+
+        request.post(webServer + '/move', {
+            form: { 
+                fen: fen,
+                check: game.in_check(),
+                gameOver: gameOver
+            } 
+        })
+
         sessionAttributes.fen = fen
         handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
 
-        request.post(webServer + '/fen', { form: { fen: fen } })
+        } catch (ex) {
+            console.log(ex)
+        }
+
 
         return handlerInput.responseBuilder
             .speak(speakOutput)

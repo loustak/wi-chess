@@ -19,11 +19,7 @@
                     "name": "PlayIntent",
                     "slots": [],
                     "samples": [
-                        "play",
-                        "start",
-                        "game",
-                        "new game",
-                        "start new game"
+                        "start new game against human"
                     ]
                 },
                 {
@@ -47,9 +43,10 @@
                         }
                     ],
                     "samples": [
+                        "{coord_start} to {coord_destination}",
                         "{coord_destination}",
-                        "move {coord_start} to {coord_destination}",
-                        "move {coord_destination}"
+                        "move {coord_destination}",
+                        "move {coord_start} to {coord_destination}"
                     ]
                 }
             ],
@@ -95,6 +92,46 @@
                         {
                             "name": {
                                 "value": "h1"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "g8"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "g7"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "g6"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "g5"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "g4"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "g3"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "g2"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "g1"
                             }
                         },
                         {

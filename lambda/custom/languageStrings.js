@@ -9,15 +9,24 @@ module.exports = {
     en: {
         translation: {
             WELCOME_MSG: 'Welcome, say play to start a new game!',
-            GAME_STARTED_MSG: 'Game started.',
-            MOVED_FROM_MSG: 'Moved from {{coord_start}} to {{coord_destination}}.',
-            MOVED_MSG: 'Moved to {{coord_destination}}.',
-            INVALID_MOVE_MSG: 'Invalid move.',
+            GAME_STARTED_MSG: 'Game started, trait to the white.',
+            MOVED_MSG: 'Moved {{piece}} from {{coord_start}} to {{coord_destination}}.',
+            TRAIT_WHITE: 'Trait to white.',
+            TRAIT_BLACK: 'Trait to black.',
+            INVALID_MOVE_MSG: 'Ambiguious or invalid move.',
             HELP_MSG: 'You can say hello to me! How can I help?',
             GOODBYE_MSG: 'Goodbye!',
             REFLECTOR_MSG: 'You just triggered {{intentName}}',
             FALLBACK_MSG: 'Sorry, I don\'t know about that. Please try again.',
-            ERROR_MSG: 'Error: {{error}}'
+            ERROR_MSG: 'Error: {{error}}',
+
+            PIECE_PAWN: 'Pawn',
+            PIECE_NIGHT: 'Night',
+            PIECE_BISHOP: 'Bishop',
+            PIECE_ROOK: 'Rook',
+            PIECE_QUEEN: 'Queen',
+            PIECE_KING: 'King',
+            PIECE_UNKNOWN: 'Unknown'
         }
     },
     fr: {

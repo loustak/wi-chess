@@ -20,11 +20,18 @@ app.post('/start', (req, res) => {
   res.status(200).end()
 })
 
-app.post('/fen', (req, res) => {
+app.post('/move', (req, res) => {
   const fen = req.body.fen
-  io.emit('fen', fen)
+  const check = req.body.check
+  const gameOver = req.body.gameOver
+
+  io.emit('move', {
+    fen: fen,
+    check: check,
+    gameOver: gameOver
+  })
 
   res.status(200).end()
 })
 
-server.listen(port, () => console.log(`Example app listening on port ${port}!`))
+server.listen(port, () => console.log(`Server listening on port ${port}!`))

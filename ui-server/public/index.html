@@ -24,8 +24,12 @@
 <body>
   
   <div id="board" style="width: 700px"></div>
+  <p id="check"></p>
+  <p id="gameOver"></p>
 
   <script>
+    const checkDOM = document.getElementById('check')
+    const gameOverDOM = document.getElementById('gameOver')
     var socket = io()
 
     socket.on('connect', () => console.log('connected'))
@@ -36,8 +40,24 @@
       board.start(true)
     })
 
-    socket.on('fen', fen => {
+    socket.on('move', (data) => {
+      const fen = data.fen
+      const check = data.check
+      const gameOver = data.gameOver
+
       board.position(fen, true)
+
+      if (check == true) {
+        checkDOM.innerHTML = 'Check !'
+      } else {
+        checkDOM.innerHTML = ''
+      }
+
+      if (gameOver == "false") {
+        gameOverDOM.innerHTML = ''
+      } else {
+        gameOverDOM.innerHTML = gameOver
+      }
     })
   </script>
 </body>
