@@ -8,13 +8,16 @@
 module.exports = {
     en: {
         translation: {
-            WELCOME_MSG: 'Welcome, say play to start a new game!',
+            WELCOME_MSG: 'Chess app started, say "start new game" to play.',
             GAME_STARTED_MSG: 'Game started, trait to the white.',
-            MOVED_MSG: 'Moved {{piece}} from {{coord_start}} to {{coord_destination}}.',
+            AI_GAME_STARTED_MSG: 'You are black, I play {{piece}} {{coord_start}} to {{coord_destination}}.',
+            AI_HUMAN_GAME_STARTED_MSG: 'You are white, you start.',
+            HUMAN_MOVED_MSG: 'Moved {{piece}} {{coord_start}} to {{coord_destination}}.',
+            AI_MOVED_MSG: 'I play {{piece}} {{coord_start}} to {{coord_destination}}.',
             TRAIT_WHITE: 'Trait to white.',
             TRAIT_BLACK: 'Trait to black.',
             INVALID_MOVE_MSG: 'Ambiguious or invalid move.',
-            HELP_MSG: 'You can say hello to me! How can I help?',
+            HELP_MSG: 'No help for you!',
             GOODBYE_MSG: 'Goodbye!',
             REFLECTOR_MSG: 'You just triggered {{intentName}}',
             FALLBACK_MSG: 'Sorry, I don\'t know about that. Please try again.',

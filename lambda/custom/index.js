@@ -55,6 +55,10 @@ const LaunchRequestHandler = {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'LaunchRequest';
     },
     handle(handlerInput) {
+        var sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
+        sessionAttributes.isPlaying = false
+        handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
+
         const speakOutput = handlerInput.t('WELCOME_MSG');
 
         return handlerInput.responseBuilder
@@ -64,55 +68,87 @@ const LaunchRequestHandler = {
     }
 };
 
-const PlayIntentHandler = {
+const StartIntentHandler = {
     canHandle(handlerInput) {
-        if (Alexa.getRequestType(handlerInput.requestEnvelope) != 'IntentRequest'
-            || Alexa.getIntentName(handlerInput.requestEnvelope) != 'PlayIntent') {
-            return false
-        }
-
-        const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
-
-        const isPlaying = sessionAttributes.isPlaying
-        if (isPlaying != null || isPlaying == false) return false
-
-        return true
-
-        // return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-        //     && Alexa.getIntentName(handlerInput.requestEnvelope) === 'PlayIntent'
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'StartIntent';
     },
     handle(handlerInput) {
-        const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
-        sessionAttributes.fen = new Chess().fen();
-        sessionAttributes.isPlaying = true
-        handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
+        try {
+        let speakOutput = null
+        const slot = Alexa.getSlot(handlerInput.requestEnvelope, 'opponent')
+        const opponent = getSlotResolutionName(slot)
+
+        let sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
+
+        // if (sessionAttributes.isPlaying) {
+        //     // A game is already playing, ask for confirmation
+        // }
 
         request.post(webServer + '/start')
 
-        const speakOutput = handlerInput.t('GAME_STARTED_MSG');
+        let game = new Chess()
+
+        if (opponent === 'AI') {
+            const color = Math.round(Math.random())
+
+            if (color == 0) {
+                // AI start
+                const moves = game.moves();
+                const move = moves[Math.floor(Math.random() * moves.length)];
+                const AIres = game.move(move);
+
+                speakOutput = handlerInput.t('AI_GAME_STARTED_MSG', {
+                    piece: getPieceName(handlerInput, AIres.piece),
+                    coord_start: AIres.from,
+                    coord_destination: AIres.to
+                })
+
+                request.post(webServer + '/move', {
+                    form: { 
+                        fen: game.fen(),
+                        check: false,
+                        gameOver: false
+                    } 
+                })
+            } else {
+                // Human start
+                speakOutput = handlerInput.t('AI_HUMAN_GAME_STARTED_MSG')
+            }
+        } else {
+            speakOutput = handlerInput.t('GAME_STARTED_MSG');
+        }
+
+        sessionAttributes.isPlaying = true
+        sessionAttributes.oponnentType = opponent
+        sessionAttributes.fen = game.fen();
+        handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
             .reprompt(speakOutput)
             .getResponse();
+    }catch(ex){console.log(ex)}
     }
 };
 
 const MoveIntentHandler = {
     canHandle(handlerInput) {
-        const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
-        if (!sessionAttributes.isPlaying) return false
-
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'MoveIntent';
     },
     handle(handlerInput) {
-        var sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
+        let sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
 
-        var has_start = Alexa.getSlotValue(handlerInput.requestEnvelope, 'coord_start')
-        var has_destination = Alexa.getSlotValue(handlerInput.requestEnvelope, 'coord_destination')
+        console.log('opponent: ' + sessionAttributes.oponnentType)
 
-        try {
+        // if (!sessionAttributes.isPlaying) {
+        //     // Game is not started, explain how to start a game
+        // }
+
+        let has_start = Alexa.getSlotValue(handlerInput.requestEnvelope, 'coord_start')
+        let has_destination = Alexa.getSlotValue(handlerInput.requestEnvelope, 'coord_destination')
+
         if (has_start != null) {
             const slot = Alexa.getSlot(handlerInput.requestEnvelope, 'coord_start')
             coord_start = getSlotResolutionName(slot)
@@ -123,10 +159,11 @@ const MoveIntentHandler = {
             coord_destination = getSlotResolutionName(slot)
         }
 
-        var game = new Chess(sessionAttributes.fen)
-        var res = null
-        var speakOutput = null
+        let game = new Chess(sessionAttributes.fen)
+        let res = null
+        let speakOutput = null
 
+        try{
         if (has_start == null && has_destination != null) {
             res = game.move(coord_destination)
         } else if (has_start != null && has_destination != null) {
@@ -135,24 +172,44 @@ const MoveIntentHandler = {
             speakOutput = handlerInput.t('INVALID_MOVE_MSG')
         }
 
+        const color = game.turn() === 'w' ? 'WHITE' : 'BLACK'
+
         if (res != null) {
-            speakOutput = handlerInput.t('MOVED_MSG', {
+            speakOutput = handlerInput.t('HUMAN_MOVED_MSG', {
                 piece: getPieceName(handlerInput, res.piece),
                 coord_start: res.from,
                 coord_destination: res.to
             })
+
+            if (sessionAttributes.oponnentType === 'AI') {
+                // Playing again the SUPERIOR AI
+                // (it just make a random move, LOL)
+                console.log('AIIIIII')
+                const moves = game.moves();
+                const move = moves[Math.floor(Math.random() * moves.length)];
+                const AIres = game.move(move);
+
+                speakOutput += handlerInput.t('AI_MOVED_MSG', {
+                    piece: getPieceName(handlerInput, AIres.piece),
+                    coord_start: AIres.from,
+                    coord_destination: AIres.to
+                })
+                console.log('DIDNT BUGGED')
+            } else {
+                // Playing against another human, pff...
+                if (color === 'WHITE') {
+                    speakOutput += ' ' + handlerInput.t('TRAIT_WHITE')
+                } else {
+                    speakOutput += ' ' + handlerInput.t('TRAIT_BLACK')
+                }
+            }
         }
 
         const fen = game.fen()
-        const color = game.turn() === 'w' ? 'WHITE' : 'BLACK'
+        sessionAttributes.fen = fen
+        handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
 
-        var gameOver = getGameOver(game, color)
-
-        if (color === 'WHITE') {
-            speakOutput += ' ' + handlerInput.t('TRAIT_WHITE')
-        } else {
-            speakOutput += ' ' + handlerInput.t('TRAIT_BLACK')
-        }
+        const gameOver = getGameOver(game, color)
 
         request.post(webServer + '/move', {
             form: { 
@@ -161,19 +218,11 @@ const MoveIntentHandler = {
                 gameOver: gameOver
             } 
         })
-
-        sessionAttributes.fen = fen
-        handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
-
-        } catch (ex) {
-            console.log(ex)
-        }
-
+    }catch(ex){console.log(ex)}
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
             .reprompt(speakOutput)
-            //.withSimpleCard('Debug', move)
             .getResponse();
     }
 };
@@ -300,7 +349,7 @@ exports.handler = Alexa.SkillBuilders.custom()
     .addRequestHandlers(
         LaunchRequestHandler,
         MoveIntentHandler,
-        PlayIntentHandler,
+        StartIntentHandler,
         HelpIntentHandler,
         CancelAndStopIntentHandler,
         FallbackIntentHandler,

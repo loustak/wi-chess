@@ -16,10 +16,19 @@
                     "samples": []
                 },
                 {
-                    "name": "PlayIntent",
-                    "slots": [],
+                    "name": "StartIntent",
+                    "slots": [
+                        {
+                            "name": "opponent",
+                            "type": "Opponent",
+                            "samples": [
+                                "{opponent}"
+                            ]
+                        }
+                    ],
                     "samples": [
-                        "start new game against human"
+                        "new game {opponent}",
+                        "start new game against {opponent}"
                     ]
                 },
                 {
@@ -375,8 +384,62 @@
                             }
                         }
                     ]
+                },
+                {
+                    "name": "Opponent",
+                    "values": [
+                        {
+                            "name": {
+                                "value": "AI",
+                                "synonyms": [
+                                    "ai",
+                                    "AI",
+                                    "artificial intelligence",
+                                    "bot",
+                                    "computer"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "human"
+                            }
+                        }
+                    ]
                 }
             ]
-        }
+        },
+        "dialog": {
+            "intents": [
+                {
+                    "name": "StartIntent",
+                    "confirmationRequired": false,
+                    "prompts": {},
+                    "slots": [
+                        {
+                            "name": "opponent",
+                            "type": "Opponent",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.804342666102.909946868913"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "delegationStrategy": "ALWAYS"
+        },
+        "prompts": [
+            {
+                "id": "Elicit.Slot.804342666102.909946868913",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "Woud you like to play against a human or an AI?"
+                    }
+                ]
+            }
+        ]
     }
 }
