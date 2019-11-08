@@ -52,10 +52,8 @@
                         }
                     ],
                     "samples": [
-                        "{coord_start} to {coord_destination}",
-                        "{coord_destination}",
-                        "move {coord_destination}",
-                        "move {coord_start} to {coord_destination}"
+                        "play {coord_start} to {coord_destination}",
+                        "play {coord_destination}"
                     ]
                 }
             ],
@@ -423,7 +421,40 @@
                             "elicitationRequired": true,
                             "prompts": {
                                 "elicitation": "Elicit.Slot.804342666102.909946868913"
-                            }
+                            },
+                            "validations": [
+                                {
+                                    "type": "hasEntityResolutionMatch",
+                                    "prompt": "Slot.Validation.946793385217.846957792907.1115709986453"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "MoveIntent",
+                    "confirmationRequired": false,
+                    "prompts": {},
+                    "slots": [
+                        {
+                            "name": "coord_start",
+                            "type": "Coordinate",
+                            "confirmationRequired": false,
+                            "elicitationRequired": false,
+                            "prompts": {}
+                        },
+                        {
+                            "name": "coord_destination",
+                            "type": "Coordinate",
+                            "confirmationRequired": false,
+                            "elicitationRequired": false,
+                            "prompts": {},
+                            "validations": [
+                                {
+                                    "type": "hasEntityResolutionMatch",
+                                    "prompt": "Slot.Validation.1202502222484.1537140812942.1276150873731"
+                                }
+                            ]
                         }
                     ]
                 }
@@ -437,6 +468,24 @@
                     {
                         "type": "PlainText",
                         "value": "Woud you like to play against a human or an AI?"
+                    }
+                ]
+            },
+            {
+                "id": "Slot.Validation.1202502222484.1537140812942.1276150873731",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "I didn't understand the coordinate, please repeat."
+                    }
+                ]
+            },
+            {
+                "id": "Slot.Validation.946793385217.846957792907.1115709986453",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "I didn't understand against what you want to play, please say it again."
                     }
                 ]
             }

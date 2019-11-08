@@ -12,7 +12,7 @@ const languageStrings = require('./languageStrings');
 const request = require('request')
 const Chess = require('chess.js').Chess;
 
-const webServer = 'http://56c0ee33.ngrok.io'
+const webServer = 'http://ba92f640.ngrok.io'
 
 function getGameOver(game, color) {
     if (game.in_draw() || game.in_stalemate()) {
@@ -64,6 +64,7 @@ const LaunchRequestHandler = {
         return handlerInput.responseBuilder
             .speak(speakOutput)
             .reprompt(speakOutput)
+            .withStandardCard("To see the chessboard", webServer)
             .getResponse();
     }
 };
@@ -74,16 +75,12 @@ const StartIntentHandler = {
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'StartIntent';
     },
     handle(handlerInput) {
-        try {
         let speakOutput = null
+        try {
         const slot = Alexa.getSlot(handlerInput.requestEnvelope, 'opponent')
         const opponent = getSlotResolutionName(slot)
 
         let sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
-
-        // if (sessionAttributes.isPlaying) {
-        //     // A game is already playing, ask for confirmation
-        // }
 
         request.post(webServer + '/start')
 
@@ -98,18 +95,18 @@ const StartIntentHandler = {
                 const move = moves[Math.floor(Math.random() * moves.length)];
                 const AIres = game.move(move);
 
-                speakOutput = handlerInput.t('AI_GAME_STARTED_MSG', {
-                    piece: getPieceName(handlerInput, AIres.piece),
-                    coord_start: AIres.from,
-                    coord_destination: AIres.to
-                })
-
                 request.post(webServer + '/move', {
                     form: { 
                         fen: game.fen(),
                         check: false,
                         gameOver: false
                     } 
+                })
+
+                speakOutput = handlerInput.t('AI_GAME_STARTED_MSG', {
+                    piece: getPieceName(handlerInput, AIres.piece),
+                    coord_start: AIres.from,
+                    coord_destination: AIres.to
                 })
             } else {
                 // Human start
@@ -124,11 +121,15 @@ const StartIntentHandler = {
         sessionAttributes.fen = game.fen();
         handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
 
+    }catch(ex){
+        console.log(ex)
+        speakOutput = ex
+    }
+
         return handlerInput.responseBuilder
             .speak(speakOutput)
             .reprompt(speakOutput)
             .getResponse();
-    }catch(ex){console.log(ex)}
     }
 };
 
@@ -138,43 +139,46 @@ const MoveIntentHandler = {
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'MoveIntent';
     },
     handle(handlerInput) {
+        let speakOutput = null
+        try{
+            console.log('1')
         let sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
 
-        console.log('opponent: ' + sessionAttributes.oponnentType)
-
-        // if (!sessionAttributes.isPlaying) {
-        //     // Game is not started, explain how to start a game
-        // }
-
+            console.log('2')
         let has_start = Alexa.getSlotValue(handlerInput.requestEnvelope, 'coord_start')
         let has_destination = Alexa.getSlotValue(handlerInput.requestEnvelope, 'coord_destination')
+            console.log('3')
 
+            console.log('4')
         if (has_start != null) {
             const slot = Alexa.getSlot(handlerInput.requestEnvelope, 'coord_start')
             coord_start = getSlotResolutionName(slot)
         }
+            console.log('5')
 
         if (has_destination != null) {
             const slot = Alexa.getSlot(handlerInput.requestEnvelope, 'coord_destination')
             coord_destination = getSlotResolutionName(slot)
         }
+            console.log('6')
 
         let game = new Chess(sessionAttributes.fen)
         let res = null
-        let speakOutput = null
 
-        try{
+            console.log('7')
         if (has_start == null && has_destination != null) {
             res = game.move(coord_destination)
         } else if (has_start != null && has_destination != null) {
             res = game.move({ from: coord_start, to: coord_destination})
-        } else {
-            speakOutput = handlerInput.t('INVALID_MOVE_MSG')
         }
+            console.log('8')
 
         const color = game.turn() === 'w' ? 'WHITE' : 'BLACK'
 
-        if (res != null) {
+            console.log('9')
+        if (res == null) {
+            speakOutput = handlerInput.t('INVALID_MOVE_MSG')
+        } else {
             speakOutput = handlerInput.t('HUMAN_MOVED_MSG', {
                 piece: getPieceName(handlerInput, res.piece),
                 coord_start: res.from,
@@ -182,34 +186,37 @@ const MoveIntentHandler = {
             })
 
             if (sessionAttributes.oponnentType === 'AI') {
-                // Playing again the SUPERIOR AI
+                // The SUPERIOR AI now make is decisive move
                 // (it just make a random move, LOL)
-                console.log('AIIIIII')
                 const moves = game.moves();
                 const move = moves[Math.floor(Math.random() * moves.length)];
                 const AIres = game.move(move);
 
-                speakOutput += handlerInput.t('AI_MOVED_MSG', {
+                speakOutput += ' ' + handlerInput.t('AI_MOVED_MSG', {
                     piece: getPieceName(handlerInput, AIres.piece),
                     coord_start: AIres.from,
                     coord_destination: AIres.to
                 })
-                console.log('DIDNT BUGGED')
-            } else {
-                // Playing against another human, pff...
-                if (color === 'WHITE') {
-                    speakOutput += ' ' + handlerInput.t('TRAIT_WHITE')
-                } else {
-                    speakOutput += ' ' + handlerInput.t('TRAIT_BLACK')
-                }
             }
         }
+            console.log('10')
+
+        if (sessionAttributes.oponnentType != 'AI') {
+            // Playing against another human, pff...
+            if (color === 'WHITE') {
+                speakOutput += ' ' + handlerInput.t('TRAIT_WHITE')
+            } else {
+                speakOutput += ' ' + handlerInput.t('TRAIT_BLACK')
+            }
+        }
+            console.log('11')
 
         const fen = game.fen()
         sessionAttributes.fen = fen
         handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
 
         const gameOver = getGameOver(game, color)
+            console.log('12')
 
         request.post(webServer + '/move', {
             form: { 
@@ -218,7 +225,10 @@ const MoveIntentHandler = {
                 gameOver: gameOver
             } 
         })
-    }catch(ex){console.log(ex)}
+    }catch(ex){
+        console.log(ex)
+        speakOutput = ex
+    }
 
         return handlerInput.responseBuilder
             .speak(speakOutput)

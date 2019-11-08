@@ -16,14 +16,20 @@
                     "samples": []
                 },
                 {
-                    "name": "PlayIntent",
-                    "slots": [],
+                    "name": "StartIntent",
+                    "slots": [
+                        {
+                            "name": "opponent",
+                            "type": "Opponent",
+                            "samples": [
+                                "{opponent}"
+                            ]
+                        }
+                    ],
                     "samples": [
-                        "play",
-                        "start",
-                        "game",
-                        "new game",
-                        "start new game"
+                        "new game {opponent}",
+                        "play new game against {opponent}",
+                        "start new game against {opponent}"
                     ]
                 },
                 {
@@ -38,21 +44,19 @@
                     "name": "MoveIntent",
                     "slots": [
                         {
-                            "name": "coordinate",
-                            "type": "Coordinate",
-                            "samples": [
-                                "{coordinate} {coordinate}",
-                                "{coordinate}"
-                            ]
+                            "name": "coord_start",
+                            "type": "Coordinate"
+                        },
+                        {
+                            "name": "coord_destination",
+                            "type": "Coordinate"
                         }
                     ],
                     "samples": [
-                        "{coordinate} {coordinate}",
-                        "{coordinate} to {coordinate}",
-                        "move {coordinate} to {coordinate}",
-                        "play {coordinate} to {coordinate}",
-                        "play {coordinate}",
-                        "move {coordinate}"
+                        "{coord_start} to {coord_destination}",
+                        "move {coord_start} to {coord_destination}",
+                        "move {coord_destination}",
+                        "{coord_destination}"
                     ]
                 }
             ],
@@ -98,6 +102,46 @@
                         {
                             "name": {
                                 "value": "h1"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "g8"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "g7"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "g6"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "g5"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "g4"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "g3"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "g2"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "g1"
                             }
                         },
                         {
@@ -341,23 +385,45 @@
                             }
                         }
                     ]
+                },
+                {
+                    "name": "Opponent",
+                    "values": [
+                        {
+                            "name": {
+                                "value": "AI",
+                                "synonyms": [
+                                    "ai",
+                                    "AI",
+                                    "artificial intelligence",
+                                    "bot",
+                                    "computer"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "human"
+                            }
+                        }
+                    ]
                 }
             ]
         },
         "dialog": {
             "intents": [
                 {
-                    "name": "MoveIntent",
+                    "name": "StartIntent",
                     "confirmationRequired": false,
                     "prompts": {},
                     "slots": [
                         {
-                            "name": "coordinate",
-                            "type": "Coordinate",
+                            "name": "opponent",
+                            "type": "Opponent",
                             "confirmationRequired": false,
                             "elicitationRequired": true,
                             "prompts": {
-                                "elicitation": "Elicit.Slot.439949135109.1395466335735"
+                                "elicitation": "Elicit.Slot.804342666102.909946868913"
                             }
                         }
                     ]
@@ -367,20 +433,11 @@
         },
         "prompts": [
             {
-                "id": "Slot.Validation.439949135109.1395466335735.1149429565795",
+                "id": "Elicit.Slot.804342666102.909946868913",
                 "variations": [
                     {
                         "type": "PlainText",
-                        "value": "Please specify a valid coordinate"
-                    }
-                ]
-            },
-            {
-                "id": "Elicit.Slot.439949135109.1395466335735",
-                "variations": [
-                    {
-                        "type": "PlainText",
-                        "value": "Please specify the move to makes"
+                        "value": "Woud you like to play against a human or an AI?"
                     }
                 ]
             }
