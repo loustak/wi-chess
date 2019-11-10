@@ -28,7 +28,6 @@
                     ],
                     "samples": [
                         "new game {opponent}",
-                        "play new game against {opponent}",
                         "start new game against {opponent}"
                     ]
                 },
@@ -44,17 +43,14 @@
                     "name": "MoveIntent",
                     "slots": [
                         {
-                            "name": "coord_start",
-                            "type": "Coordinate"
-                        },
-                        {
                             "name": "coord_destination",
-                            "type": "Coordinate"
+                            "type": "Coordinate",
+                            "samples": [
+                                "{coord_destination}"
+                            ]
                         }
                     ],
                     "samples": [
-                        "{coord_start} to {coord_destination}",
-                        "move {coord_start} to {coord_destination}",
                         "move {coord_destination}",
                         "{coord_destination}"
                     ]
@@ -66,322 +62,715 @@
                     "values": [
                         {
                             "name": {
-                                "value": "h8"
+                                "value": "h8",
+                                "synonyms": [
+                                    "hotel eight",
+                                    "h eight",
+                                    "h. eight",
+                                    "H8"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "h7"
+                                "value": "h7",
+                                "synonyms": [
+                                    "hotel seven",
+                                    "h seven",
+                                    "h. seven",
+                                    "H7"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "h6"
+                                "value": "h6",
+                                "synonyms": [
+                                    "hotel six",
+                                    "h six",
+                                    "h. six",
+                                    "H6"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "h5"
+                                "value": "h5",
+                                "synonyms": [
+                                    "hotel five",
+                                    "h five",
+                                    "h. five",
+                                    "H5"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "h4"
+                                "value": "h4",
+                                "synonyms": [
+                                    "hotel four",
+                                    "h four",
+                                    "h. four",
+                                    "H4"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "h3"
+                                "value": "h3",
+                                "synonyms": [
+                                    "hotel three",
+                                    "h three",
+                                    "h. three",
+                                    "H3"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "h2"
+                                "value": "h2",
+                                "synonyms": [
+                                    "hotel two",
+                                    "h two",
+                                    "h. two",
+                                    "H2"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "h1"
+                                "value": "h1",
+                                "synonyms": [
+                                    "hotel one",
+                                    "h one",
+                                    "h. one",
+                                    "H1"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "g8"
+                                "value": "g8",
+                                "synonyms": [
+                                    "golf eight",
+                                    "g eight",
+                                    "g. eight",
+                                    "G8"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "g7"
+                                "value": "g7",
+                                "synonyms": [
+                                    "golf seven",
+                                    "g seven",
+                                    "g. seven",
+                                    "G7"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "g6"
+                                "value": "g6",
+                                "synonyms": [
+                                    "golf six",
+                                    "g six",
+                                    "g. six",
+                                    "G6"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "g5"
+                                "value": "g5",
+                                "synonyms": [
+                                    "golf five",
+                                    "g five",
+                                    "g. five",
+                                    "G5"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "g4"
+                                "value": "g4",
+                                "synonyms": [
+                                    "golf four",
+                                    "g four",
+                                    "g. four",
+                                    "G4"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "g3"
+                                "value": "g3",
+                                "synonyms": [
+                                    "golf three",
+                                    "g three",
+                                    "g. three",
+                                    "G3"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "g2"
+                                "value": "g2",
+                                "synonyms": [
+                                    "golf two",
+                                    "g two",
+                                    "g. two",
+                                    "G2"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "g1"
+                                "value": "g1",
+                                "synonyms": [
+                                    "golf one",
+                                    "g one",
+                                    "g. one",
+                                    "G1"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "f8"
+                                "value": "f8",
+                                "synonyms": [
+                                    "foxtrot eight",
+                                    "f eight",
+                                    "f. eight",
+                                    "F8"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "f7"
+                                "value": "f7",
+                                "synonyms": [
+                                    "foxtrot seven",
+                                    "f seven",
+                                    "f. seven",
+                                    "F7"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "f6"
+                                "value": "f6",
+                                "synonyms": [
+                                    "foxtrot six",
+                                    "f six",
+                                    "f. six",
+                                    "F6"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "f5"
+                                "value": "f5",
+                                "synonyms": [
+                                    "foxtrot five",
+                                    "f five",
+                                    "f. five",
+                                    "F5"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "f4"
+                                "value": "f4",
+                                "synonyms": [
+                                    "foxtrot four",
+                                    "f four",
+                                    "f. four",
+                                    "F4"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "f3"
+                                "value": "f3",
+                                "synonyms": [
+                                    "foxtrot three",
+                                    "f three",
+                                    "f. three",
+                                    "F3"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "f2"
+                                "value": "f2",
+                                "synonyms": [
+                                    "foxtrot two",
+                                    "f two",
+                                    "f. two",
+                                    "F2"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "f1"
+                                "value": "f1",
+                                "synonyms": [
+                                    "foxtrot one",
+                                    "f one",
+                                    "f. one",
+                                    "F1"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "e8"
+                                "value": "e8",
+                                "synonyms": [
+                                    "echo eight",
+                                    "e eight",
+                                    "e. eight",
+                                    "E8"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "e7"
+                                "value": "e7",
+                                "synonyms": [
+                                    "echo seven",
+                                    "e seven",
+                                    "e. seven",
+                                    "E7"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "e6"
+                                "value": "e6",
+                                "synonyms": [
+                                    "echo six",
+                                    "e six",
+                                    "e. six",
+                                    "E6"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "e5"
+                                "value": "e5",
+                                "synonyms": [
+                                    "echo five",
+                                    "e five",
+                                    "e. five",
+                                    "E5"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "e4"
+                                "value": "e4",
+                                "synonyms": [
+                                    "echo four",
+                                    "e four",
+                                    "e. four",
+                                    "E4"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "e3"
+                                "value": "e3",
+                                "synonyms": [
+                                    "echo three",
+                                    "e three",
+                                    "e. three",
+                                    "E3"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "e2"
+                                "value": "e2",
+                                "synonyms": [
+                                    "echo two",
+                                    "e two",
+                                    "e. two",
+                                    "E2"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "e1"
+                                "value": "e1",
+                                "synonyms": [
+                                    "echo one",
+                                    "e one",
+                                    "e. one",
+                                    "E1"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "d8"
+                                "value": "d8",
+                                "synonyms": [
+                                    "delta eight",
+                                    "d eight",
+                                    "d. eight",
+                                    "D8"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "d7"
+                                "value": "d7",
+                                "synonyms": [
+                                    "delta seven",
+                                    "d seven",
+                                    "d. seven",
+                                    "D7"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "d6"
+                                "value": "d6",
+                                "synonyms": [
+                                    "delta six",
+                                    "d six",
+                                    "d. six",
+                                    "D6"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "d5"
+                                "value": "d5",
+                                "synonyms": [
+                                    "delta five",
+                                    "d five",
+                                    "d. five",
+                                    "D5"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "d4"
+                                "value": "d4",
+                                "synonyms": [
+                                    "delta four",
+                                    "d. four",
+                                    "d four",
+                                    "default",
+                                    "D4"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "d3"
+                                "value": "d3",
+                                "synonyms": [
+                                    "delta three",
+                                    "d three",
+                                    "d. three",
+                                    "D3"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "d2"
+                                "value": "d2",
+                                "synonyms": [
+                                    "delta two",
+                                    "d two",
+                                    "d. two",
+                                    "D2"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "d1"
+                                "value": "d1",
+                                "synonyms": [
+                                    "delta one",
+                                    "d one",
+                                    "d. one",
+                                    "D1"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "c8"
+                                "value": "c8",
+                                "synonyms": [
+                                    "see eight",
+                                    "charlie eight",
+                                    "c eight",
+                                    "c. eight",
+                                    "C8"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "c7"
+                                "value": "c7",
+                                "synonyms": [
+                                    "see seven",
+                                    "charlie seven",
+                                    "c seven",
+                                    "c. seven",
+                                    "C7"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "c6"
+                                "value": "c6",
+                                "synonyms": [
+                                    "see six",
+                                    "charlie six",
+                                    "c six",
+                                    "c. six",
+                                    "C6"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "c5"
+                                "value": "c5",
+                                "synonyms": [
+                                    "see five",
+                                    "C5",
+                                    "charlie five",
+                                    "c.five",
+                                    "c five"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "c4"
+                                "value": "c4",
+                                "synonyms": [
+                                    "see four",
+                                    "charlie four",
+                                    "c four",
+                                    "c. four",
+                                    "C4"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "c3"
+                                "value": "c3",
+                                "synonyms": [
+                                    "see three",
+                                    "c three",
+                                    "C3",
+                                    "charlie three",
+                                    "c. three"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "c2"
+                                "value": "c2",
+                                "synonyms": [
+                                    "see two",
+                                    "c two",
+                                    "C2",
+                                    "charlie two",
+                                    "c. two"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "c1"
+                                "value": "c1",
+                                "synonyms": [
+                                    "see one",
+                                    "c one",
+                                    "C1",
+                                    "charlie one",
+                                    "c. one"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "b8"
+                                "value": "b8",
+                                "synonyms": [
+                                    "b eight",
+                                    "B8",
+                                    "beta eight",
+                                    "b. eight"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "b7"
+                                "value": "b7",
+                                "synonyms": [
+                                    "b seven",
+                                    "B7",
+                                    "beta seven",
+                                    "b. seven"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "b6"
+                                "value": "b6",
+                                "synonyms": [
+                                    "b six",
+                                    "B6",
+                                    "beta six",
+                                    "b. six"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "b5"
+                                "value": "b5",
+                                "synonyms": [
+                                    "b five",
+                                    "B5",
+                                    "beta five",
+                                    "b. five"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "b4"
+                                "value": "b4",
+                                "synonyms": [
+                                    "beta four",
+                                    "b four",
+                                    "b. four",
+                                    "B4"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "b3"
+                                "value": "b3",
+                                "synonyms": [
+                                    "b three",
+                                    "B3",
+                                    "beta three",
+                                    "b. three"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "b2"
+                                "value": "b2",
+                                "synonyms": [
+                                    "b two",
+                                    "B2",
+                                    "beta two",
+                                    "b. two"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "b1"
+                                "value": "b1",
+                                "synonyms": [
+                                    "b one",
+                                    "B1",
+                                    "beta one",
+                                    "b. one"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "a8"
+                                "value": "a8",
+                                "synonyms": [
+                                    "a eight",
+                                    "A8",
+                                    "alpha eight",
+                                    "a. eight"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "a7"
+                                "value": "a7",
+                                "synonyms": [
+                                    "a seven",
+                                    "A7",
+                                    "alpha seven",
+                                    "a. seven"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "a6"
+                                "value": "a6",
+                                "synonyms": [
+                                    "a six",
+                                    "A6",
+                                    "alpha six",
+                                    "a. six"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "a5"
+                                "value": "a5",
+                                "synonyms": [
+                                    "a five",
+                                    "A5",
+                                    "alpha five",
+                                    "a. five"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "a4"
+                                "value": "a4",
+                                "synonyms": [
+                                    "alpha four",
+                                    "a four",
+                                    "a. four",
+                                    "A4"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "a3"
+                                "value": "a3",
+                                "synonyms": [
+                                    "a three",
+                                    "A3",
+                                    "alpha three",
+                                    "a. three"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "a2"
+                                "value": "a2",
+                                "synonyms": [
+                                    "a two",
+                                    "A2",
+                                    "alpha two",
+                                    "a. two"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "a1"
+                                "value": "a1",
+                                "synonyms": [
+                                    "a one",
+                                    "A1",
+                                    "alpha one",
+                                    "a. one"
+                                ]
                             }
                         }
                     ]
@@ -403,7 +792,11 @@
                         },
                         {
                             "name": {
-                                "value": "human"
+                                "value": "human",
+                                "synonyms": [
+                                    "Human",
+                                    "friend"
+                                ]
                             }
                         }
                     ]
@@ -424,7 +817,35 @@
                             "elicitationRequired": true,
                             "prompts": {
                                 "elicitation": "Elicit.Slot.804342666102.909946868913"
-                            }
+                            },
+                            "validations": [
+                                {
+                                    "type": "hasEntityResolutionMatch",
+                                    "prompt": "Slot.Validation.946793385217.846957792907.1115709986453"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "MoveIntent",
+                    "confirmationRequired": false,
+                    "prompts": {},
+                    "slots": [
+                        {
+                            "name": "coord_destination",
+                            "type": "Coordinate",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.862430512646.1460940046502"
+                            },
+                            "validations": [
+                                {
+                                    "type": "hasEntityResolutionMatch",
+                                    "prompt": "Slot.Validation.1202502222484.1537140812942.1276150873731"
+                                }
+                            ]
                         }
                     ]
                 }
@@ -438,6 +859,33 @@
                     {
                         "type": "PlainText",
                         "value": "Woud you like to play against a human or an AI?"
+                    }
+                ]
+            },
+            {
+                "id": "Slot.Validation.1202502222484.1537140812942.1276150873731",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "I didn't understand the coordinate, please repeat."
+                    }
+                ]
+            },
+            {
+                "id": "Slot.Validation.946793385217.846957792907.1115709986453",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "I didn't understand against what you want to play, please say it again."
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.862430512646.1460940046502",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "I didn't understand the coordinate."
                     }
                 ]
             }

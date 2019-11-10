@@ -14,15 +14,15 @@ const Chess = require('chess.js').Chess;
 
 const webServer = 'http://ba92f640.ngrok.io'
 
-function getGameOver(game, color) {
+function getGameOver(game) {
     if (game.in_draw() || game.in_stalemate()) {
         return 'DRAW'
     } else if (game.in_threefold_repetition()) {
-        return 'REPETITION'
+        return 'DRAW'
     } else if (game.insufficient_material()) {
-        return 'INSUFFICIENT_MATERIAL'
+        return 'DRAW'
     } else if (game.in_checkmate()) {
-        return color + '_CHECKMATE'
+        return 'CHECKMATE'
     }
 
     return false
@@ -76,7 +76,6 @@ const StartIntentHandler = {
     },
     handle(handlerInput) {
         let speakOutput = null
-        try {
         const slot = Alexa.getSlot(handlerInput.requestEnvelope, 'opponent')
         const opponent = getSlotResolutionName(slot)
 
@@ -121,11 +120,6 @@ const StartIntentHandler = {
         sessionAttributes.fen = game.fen();
         handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
 
-    }catch(ex){
-        console.log(ex)
-        speakOutput = ex
-    }
-
         return handlerInput.responseBuilder
             .speak(speakOutput)
             .reprompt(speakOutput)
@@ -140,42 +134,32 @@ const MoveIntentHandler = {
     },
     handle(handlerInput) {
         let speakOutput = null
-        try{
-            console.log('1')
         let sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
 
-            console.log('2')
         let has_start = Alexa.getSlotValue(handlerInput.requestEnvelope, 'coord_start')
         let has_destination = Alexa.getSlotValue(handlerInput.requestEnvelope, 'coord_destination')
-            console.log('3')
 
-            console.log('4')
         if (has_start != null) {
             const slot = Alexa.getSlot(handlerInput.requestEnvelope, 'coord_start')
             coord_start = getSlotResolutionName(slot)
         }
-            console.log('5')
 
         if (has_destination != null) {
             const slot = Alexa.getSlot(handlerInput.requestEnvelope, 'coord_destination')
             coord_destination = getSlotResolutionName(slot)
         }
-            console.log('6')
 
         let game = new Chess(sessionAttributes.fen)
         let res = null
 
-            console.log('7')
         if (has_start == null && has_destination != null) {
             res = game.move(coord_destination)
         } else if (has_start != null && has_destination != null) {
             res = game.move({ from: coord_start, to: coord_destination})
         }
-            console.log('8')
 
         const color = game.turn() === 'w' ? 'WHITE' : 'BLACK'
 
-            console.log('9')
         if (res == null) {
             speakOutput = handlerInput.t('INVALID_MOVE_MSG')
         } else {
@@ -199,9 +183,17 @@ const MoveIntentHandler = {
                 })
             }
         }
-            console.log('10')
 
-        if (sessionAttributes.oponnentType != 'AI') {
+        const check = game.in_check()
+        const gameOver = getGameOver(game)
+
+        if (check) {
+            speakOutput += ' ' + handlerInput.t('CHECK_MSG')
+        } else if (gameOver === 'DRAW') {
+            speakOutput += ' ' + handlerInput.t('DRAW_MSG')
+        } else if (gameOver === 'CHECKMATE') {
+            speakOutput += ' ' + handlerInput.t('CHECKMATE_MSG', {color: color})
+        } else if (!gameOver && sessionAttributes.oponnentType != 'AI') {
             // Playing against another human, pff...
             if (color === 'WHITE') {
                 speakOutput += ' ' + handlerInput.t('TRAIT_WHITE')
@@ -209,26 +201,18 @@ const MoveIntentHandler = {
                 speakOutput += ' ' + handlerInput.t('TRAIT_BLACK')
             }
         }
-            console.log('11')
 
         const fen = game.fen()
         sessionAttributes.fen = fen
         handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
 
-        const gameOver = getGameOver(game, color)
-            console.log('12')
-
         request.post(webServer + '/move', {
             form: { 
                 fen: fen,
-                check: game.in_check(),
+                check: check,
                 gameOver: gameOver
             } 
         })
-    }catch(ex){
-        console.log(ex)
-        speakOutput = ex
-    }
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
