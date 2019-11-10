@@ -187,7 +187,7 @@ const MoveIntentHandler = {
         const check = game.in_check()
         const gameOver = getGameOver(game)
 
-        if (check) {
+        if (check && !gameOver) {
             speakOutput += ' ' + handlerInput.t('CHECK_MSG')
         } else if (gameOver === 'DRAW') {
             speakOutput += ' ' + handlerInput.t('DRAW_MSG')

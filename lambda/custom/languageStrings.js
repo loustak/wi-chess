@@ -16,7 +16,7 @@ module.exports = {
             AI_MOVED_MSG: 'I play {{piece}} {{coord_start}} to {{coord_destination}}.',
             TRAIT_WHITE: 'Trait to white.',
             TRAIT_BLACK: 'Trait to black.',
-            CHECk_MSG: 'Check',
+            CHECK_MSG: 'Check',
             DRAW_MSG: 'Game end by draw.',
             CHECKMATE_MSG: 'Checkmate, {{color}} win.',
             INVALID_MOVE_MSG: 'Ambiguious or invalid move.',

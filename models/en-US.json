@@ -48,9 +48,15 @@
                             "samples": [
                                 "{coord_destination}"
                             ]
+                        },
+                        {
+                            "name": "coord_start",
+                            "type": "Coordinate"
                         }
                     ],
                     "samples": [
+                        "{coord_start} to {coord_destination}",
+                        "move {coord_start} to  {coord_destination}",
                         "move {coord_destination}",
                         "{coord_destination}"
                     ]
@@ -846,6 +852,13 @@
                                     "prompt": "Slot.Validation.1202502222484.1537140812942.1276150873731"
                                 }
                             ]
+                        },
+                        {
+                            "name": "coord_start",
+                            "type": "Coordinate",
+                            "confirmationRequired": false,
+                            "elicitationRequired": false,
+                            "prompts": {}
                         }
                     ]
                 }
