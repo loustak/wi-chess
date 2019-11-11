@@ -39,6 +39,9 @@
     socket.on('start', (data) => {
       board.start(true)
       board.position(data.fen, true)
+
+      checkDOM.innerHTML = ''
+      gameOverDOM.innerHTML = ''
     })
 
     socket.on('move', (data) => {
