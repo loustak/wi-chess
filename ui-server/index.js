@@ -15,7 +15,9 @@ io.on('connection', (socket) => {
 app.use(express.static('public'))
 
 app.post('/start', (req, res) => {
-  io.emit('start')
+  io.emit('start', {
+    fen: req.body.fen
+  })
 
   res.status(200).end()
 })

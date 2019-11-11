@@ -56,7 +56,7 @@
                     ],
                     "samples": [
                         "{coord_start} to {coord_destination}",
-                        "move {coord_start} to  {coord_destination}",
+                        "move {coord_start} to {coord_destination}",
                         "move {coord_destination}",
                         "{coord_destination}"
                     ]

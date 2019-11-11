@@ -81,8 +81,6 @@ const StartIntentHandler = {
 
         let sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
 
-        request.post(webServer + '/start')
-
         let game = new Chess()
 
         if (opponent === 'AI') {
@@ -93,14 +91,6 @@ const StartIntentHandler = {
                 const moves = game.moves();
                 const move = moves[Math.floor(Math.random() * moves.length)];
                 const AIres = game.move(move);
-
-                request.post(webServer + '/move', {
-                    form: { 
-                        fen: game.fen(),
-                        check: false,
-                        gameOver: false
-                    } 
-                })
 
                 speakOutput = handlerInput.t('AI_GAME_STARTED_MSG', {
                     piece: getPieceName(handlerInput, AIres.piece),
@@ -114,6 +104,12 @@ const StartIntentHandler = {
         } else {
             speakOutput = handlerInput.t('GAME_STARTED_MSG');
         }
+
+        request.post(webServer + '/start', {
+            form: {
+                fen: game.fen()
+            }
+        })
 
         sessionAttributes.isPlaying = true
         sessionAttributes.oponnentType = opponent
@@ -158,8 +154,6 @@ const MoveIntentHandler = {
             res = game.move({ from: coord_start, to: coord_destination})
         }
 
-        const color = game.turn() === 'w' ? 'WHITE' : 'BLACK'
-
         if (res == null) {
             speakOutput = handlerInput.t('INVALID_MOVE_MSG')
         } else {
@@ -169,7 +163,7 @@ const MoveIntentHandler = {
                 coord_destination: res.to
             })
 
-            if (sessionAttributes.oponnentType === 'AI') {
+            if (!game.game_over() && sessionAttributes.oponnentType === 'AI') {
                 // The SUPERIOR AI now make is decisive move
                 // (it just make a random move, LOL)
                 const moves = game.moves();
@@ -186,13 +180,15 @@ const MoveIntentHandler = {
 
         const check = game.in_check()
         const gameOver = getGameOver(game)
+        const color = game.turn() === 'w' ? 'WHITE' : 'BLACK'
+        const otherColor = game.turn() === 'w' ? 'BLACK' : 'WHITE'
 
-        if (check && !gameOver) {
+        if (check && !game.game_over()) {
             speakOutput += ' ' + handlerInput.t('CHECK_MSG')
         } else if (gameOver === 'DRAW') {
             speakOutput += ' ' + handlerInput.t('DRAW_MSG')
         } else if (gameOver === 'CHECKMATE') {
-            speakOutput += ' ' + handlerInput.t('CHECKMATE_MSG', {color: color})
+            speakOutput += ' ' + handlerInput.t('CHECKMATE_MSG', {color: otherColor})
         } else if (!gameOver && sessionAttributes.oponnentType != 'AI') {
             // Playing against another human, pff...
             if (color === 'WHITE') {

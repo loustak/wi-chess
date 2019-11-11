@@ -36,8 +36,9 @@
 
     var board = Chessboard('board')
 
-    socket.on('start', () => {
+    socket.on('start', (data) => {
       board.start(true)
+      board.position(data.fen, true)
     })
 
     socket.on('move', (data) => {
